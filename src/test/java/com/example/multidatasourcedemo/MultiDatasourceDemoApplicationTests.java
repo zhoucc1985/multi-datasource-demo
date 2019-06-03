@@ -1,28 +1,32 @@
 package com.example.multidatasourcedemo;
 
 		import com.example.multidatasourcedemo.pojo.User;
+		import org.jasypt.encryption.StringEncryptor;
 		import org.junit.Before;
 		import org.junit.Test;
 		import org.junit.runner.RunWith;
 		import org.mybatis.spring.SqlSessionTemplate;
+		import org.springframework.beans.factory.annotation.Autowired;
 		import org.springframework.boot.test.context.SpringBootTest;
 		import org.springframework.context.ApplicationContext;
 		import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 		import org.springframework.test.context.junit4.SpringRunner;
 
+		import javax.sql.DataSource;
 		import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MultiDatasourceDemoApplicationTests {
+	@Autowired
+	private StringEncryptor encryptor;
 
-	private SqlSessionTemplate template = null;
-	private ApplicationContext context = null;
+	@Autowired
+	private SpringUtils springUtils;
 
 	@Before
  	public void before() {
-		context = new AnnotationConfigApplicationContext("com.example.multidatasourcedemo");
-		template = context.getBean(SqlSessionTemplate.class);
+
 	}
 
 	@Test
@@ -31,8 +35,17 @@ public class MultiDatasourceDemoApplicationTests {
 
 	@Test
 	public void testSelect(){
-		String sql = "com.example.multidatasourcedemo.Dao.find";
-		User user = (User) template.selectList(sql, 1);
+		SqlSessionTemplate barSqlSessionTemplate = (SqlSessionTemplate) springUtils.getBeanByName("barSqlSessionTemplate");
+		String sql = "com.example.multidatasourcedemo.Dao.UserDao.find";
+		List<User>  user = barSqlSessionTemplate.selectList(sql, 1);
 		System.out.println(user.toString());
+	}
+
+	// 给HakariCP配置密码加密
+	@Test
+	public void getEncPasswd() {
+
+		String password = encryptor.encrypt("root");
+		System.out.println("加密密码: " + password);
 	}
 }

@@ -70,6 +70,7 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 	}
 
 	@Bean
+	@Primary
 	public DataSource barDataSource() {
 		DataSourceProperties dataSourceProperties = barDataSourceProperties();
 		log.info("bar datasource: {}", dataSourceProperties.getUrl());
@@ -89,6 +90,7 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 	}
 
 	@Bean
+	@Primary
 	public JdbcTemplate barJdbcTemplate(){
 		DataSource barDataSource = barDataSource();
 		return new JdbcTemplate(barDataSource);
