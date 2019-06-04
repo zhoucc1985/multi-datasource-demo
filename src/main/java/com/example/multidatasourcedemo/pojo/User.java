@@ -1,5 +1,6 @@
 package com.example.multidatasourcedemo.pojo;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,9 +11,10 @@ import lombok.Data;
  */
 
 @Data
+@Builder
 public class User {
 
-    private Integer id;
+    private long id;
 
     private String userName;
 }

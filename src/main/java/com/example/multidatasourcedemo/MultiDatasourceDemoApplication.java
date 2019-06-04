@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -94,6 +96,32 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 	public JdbcTemplate barJdbcTemplate(){
 		DataSource barDataSource = barDataSource();
 		return new JdbcTemplate(barDataSource);
+	}
+
+	/**
+	 * 功能描述: springboot jdbcTemplate自带处理并返回主键
+	 *
+	 * @param:
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 17:21
+	 */
+	@Bean
+	@Autowired
+	public SimpleJdbcInsert simpleJdbcInsert(JdbcTemplate jdbcTemplate) {
+		return new SimpleJdbcInsert(jdbcTemplate)
+				.withTableName("users").usingGeneratedKeyColumns("id");
+	}
+
+	/**
+	 * 功能描述: springboot jdbcTemplate自带批量处理
+	 *
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 17:22
+	 */
+	@Bean
+	@Resource
+	public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource barDataSource) {
+		return new NamedParameterJdbcTemplate(barDataSource);
 	}
 
 	@Override

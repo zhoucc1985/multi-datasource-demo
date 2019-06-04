@@ -1,28 +1,32 @@
 package com.example.multidatasourcedemo;
 
-		import com.example.multidatasourcedemo.pojo.User;
-		import org.jasypt.encryption.StringEncryptor;
-		import org.junit.Before;
-		import org.junit.Test;
-		import org.junit.runner.RunWith;
-		import org.mybatis.spring.SqlSessionTemplate;
-		import org.springframework.beans.factory.annotation.Autowired;
-		import org.springframework.boot.test.context.SpringBootTest;
-		import org.springframework.context.ApplicationContext;
-		import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-		import org.springframework.test.context.junit4.SpringRunner;
+import com.example.multidatasourcedemo.Dao.JdbcTemplateDao;
+import com.example.multidatasourcedemo.pojo.User;
+import lombok.extern.slf4j.Slf4j;
+import org.jasypt.encryption.StringEncryptor;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-		import javax.sql.DataSource;
-		import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class MultiDatasourceDemoApplicationTests {
 	@Autowired
 	private StringEncryptor encryptor;
 
 	@Autowired
 	private SpringUtils springUtils;
+
+	@Autowired
+	private JdbcTemplateDao jdbcTemplateDao;
 
 	@Before
  	public void before() {
@@ -33,6 +37,9 @@ public class MultiDatasourceDemoApplicationTests {
 	public void contextLoads() {
 	}
 
+	/**
+	 *  通过SqlSessionTemplate操作Mapper对象
+	 */
 	@Test
 	public void testSelect(){
 		SqlSessionTemplate barSqlSessionTemplate = (SqlSessionTemplate) springUtils.getBeanByName("barSqlSessionTemplate");
@@ -41,11 +48,108 @@ public class MultiDatasourceDemoApplicationTests {
 		System.out.println(user.toString());
 	}
 
-	// 给HakariCP配置密码加密
+	/**
+	 * 给HakariCP配置密码加密
+ 	 */
 	@Test
 	public void getEncPasswd() {
-
 		String password = encryptor.encrypt("root");
 		System.out.println("加密密码: " + password);
 	}
+
+	/**
+	 * 功能描述: 通过jdbcTemplate 对数据库进行增删改查
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 15:16
+	 */
+	@Test
+	public void listData() {
+		jdbcTemplateDao.listData();
+	}
+
+/**
+ * 功能描述: jdbcTemplate WHERE条件查询
+ *
+ * @auther: zhoucc
+ * @date: 2019/6/4 16:20
+ */
+	@Test
+	public void selectById() {
+		User user = jdbcTemplateDao.selectById(1);
+		log.info(user.toString());
+	}
+
+	/**
+	 * 功能描述: JdbcTemplate 数据单条插入并主键自增
+	 *
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 16:21
+	 */
+	@Test
+	public void insertData() {
+		User user = User.builder().id(2).userName("zhouql").build();
+		int num = jdbcTemplateDao.insertData(user);
+		log.info(user.toString());
+	}
+
+	/**
+	 * 功能描述: JdbcTemplate 数据单条插入并主键自增，另一条方法.
+	 *
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 16:53
+	 */
+	@Test
+	public void insertDataNew() {
+		User user = User.builder().id(2).userName("zhouxc").build();
+		jdbcTemplateDao.insertDataNew(user);
+	}
+
+	/**
+	 * 功能描述: 更新数据
+	 *
+	 * @param: 更新对象
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 17:11
+	 */
+	@Test
+	public void updateData() {
+		User user = User.builder().id(2).userName("zhouxc").build();
+		jdbcTemplateDao.update(user);
+	}
+
+
+	/**
+	 * 功能描述: 根据id删除记录
+	 *
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 17:11
+	 */
+	@Test
+	public void deleteById() {
+		jdbcTemplateDao.deleteById(7);
+	}
+
+	/**
+	 * 功能描述: jdbcTemplate 批量插入
+	 *
+	 * @param:
+	 * @auther: zhoucc
+	 * @date: 2019/6/4 17:36
+	 */
+	@Test
+	public void batchInsert() {
+		jdbcTemplateDao.batchInsert();
+	}
+
+
+	@Test
+	public void batchNewInsert() {
+		List<User> list = new ArrayList<>();
+		list.add(User.builder().id(12).userName("zhouyt").build());
+		list.add(User.builder().id(13).userName("liuxr").build());
+		list.add(User.builder().id(14).userName("zhouyd").build());
+		list.add(User.builder().id(15).userName("zhouxd").build());
+		jdbcTemplateDao.batchNewInsert(list);
+	}
+
 }
