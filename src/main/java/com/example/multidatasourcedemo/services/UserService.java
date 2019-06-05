@@ -25,12 +25,12 @@ public class UserService {
     @Resource
     private UserDao userDao;
 
-    @Transactional
+    @Transactional(rollbackFor = { Exception.class })
     public User findOne(int id) {
         return userDao.find();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = { Exception.class })
     public void insert() {
         User user1 = User.builder().userName("0001").build();
         userDao.insert(user1);
