@@ -27,7 +27,7 @@ public class UserController {
     @RequestMapping("/insert")
     public String insertUser() {
         try {
-            userService.insert();
+            userService.insertTest();
         } catch (Exception e) {
             e.printStackTrace();
             return "插入失败";
