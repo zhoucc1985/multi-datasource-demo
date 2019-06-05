@@ -23,4 +23,15 @@ public class UserController {
     public String GetUser(@PathVariable int id){
         return userService.findOne(id).toString();
     }
+
+    @RequestMapping("/insert")
+    public String insertUser() {
+        try {
+            userService.insert();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "插入失败";
+        }
+        return "插入成功";
+    }
 }

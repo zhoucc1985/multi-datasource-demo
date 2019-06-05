@@ -10,7 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description:
  */
 
-@Mapper
+//@Mapper
 public interface UserDao {
     public User find();
+
+    public int insert(User user);
 }

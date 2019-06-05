@@ -81,8 +81,8 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 
 	@Bean
 	@Resource
-	public PlatformTransactionManager barTxManager(DataSource barDataSource) {
-		return new DataSourceTransactionManager(barDataSource);
+	public PlatformTransactionManager fooTxManager(DataSource fooDataSource) {
+		return new DataSourceTransactionManager(fooDataSource);
 	}
 
 	@Bean
@@ -185,7 +185,8 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 
 	@Bean
 	@Resource
-	public PlatformTransactionManager fooTxManager(DataSource barDataSource) {
+	@Primary
+	public PlatformTransactionManager barTxManager(DataSource barDataSource) {
 		return new DataSourceTransactionManager(barDataSource);
 	}
 
