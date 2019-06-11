@@ -1,5 +1,6 @@
 package com.example.multidatasourcedemo;
 
+import com.example.multidatasourcedemo.Component.AsyncTask;
 import com.example.multidatasourcedemo.Dao.JdbcTemplateDao;
 import com.example.multidatasourcedemo.pojo.User;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,12 @@ import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,6 +30,9 @@ public class MultiDatasourceDemoApplicationTests {
 
 	@Autowired
 	private JdbcTemplateDao jdbcTemplateDao;
+
+	@Autowired
+	private AsyncTask asyncTask;
 
 	@Before
  	public void before() {
@@ -150,6 +156,35 @@ public class MultiDatasourceDemoApplicationTests {
 		list.add(User.builder().id(14).userName("zhouyd").build());
 		list.add(User.builder().id(15).userName("zhouxd").build());
 		jdbcTemplateDao.batchNewInsert(list);
+	}
+
+	@Test
+	public void AsyncTaskTest(){
+		try {
+			asyncTask.doTaskOne();
+			asyncTask.doTaskTwo();
+			asyncTask.doTaskThree();
+			Thread.sleep(15000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void AsyncTaskNewTest() throws InterruptedException {
+		long start = System.currentTimeMillis();
+		Future<String> task1 = asyncTask.doTaskNewOne();
+		Future<String> task2 = asyncTask.doTaskNewTwo();
+		Future<String> task3 = asyncTask.doTaskNewThree();
+
+		while (true) {
+			if (task1.isDone() && task2.isDone() && task3.isDone()) {
+				break;
+			}
+			Thread.sleep(1000);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
 	}
 
 }

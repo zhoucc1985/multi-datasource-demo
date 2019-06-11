@@ -24,6 +24,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -41,6 +42,7 @@ import java.sql.SQLException;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(exposeProxy=true)
 @EnableScheduling
+@EnableAsync
 public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 
 	@Autowired
