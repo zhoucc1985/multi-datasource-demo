@@ -4,6 +4,7 @@ import com.example.multidatasourcedemo.Component.AsyncTask;
 import com.example.multidatasourcedemo.Dao.JdbcTemplateDao;
 import com.example.multidatasourcedemo.pojo.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,8 @@ public class MultiDatasourceDemoApplicationTests {
 
 	@Autowired
 	private AsyncTask asyncTask;
+
+	private Logger logger = Logger.getLogger(getClass());
 
 	@Before
  	public void before() {
@@ -173,10 +176,10 @@ public class MultiDatasourceDemoApplicationTests {
 	@Test
 	public void AsyncTaskNewTest() throws InterruptedException {
 		long start = System.currentTimeMillis();
+		logger.error("任务开始");
 		Future<String> task1 = asyncTask.doTaskNewOne();
 		Future<String> task2 = asyncTask.doTaskNewTwo();
 		Future<String> task3 = asyncTask.doTaskNewThree();
-
 		while (true) {
 			if (task1.isDone() && task2.isDone() && task3.isDone()) {
 				break;
@@ -185,6 +188,7 @@ public class MultiDatasourceDemoApplicationTests {
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
+		logger.info("已完成");
 	}
 
 }
