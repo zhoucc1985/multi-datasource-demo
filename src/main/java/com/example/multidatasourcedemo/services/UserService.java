@@ -3,6 +3,7 @@ package com.example.multidatasourcedemo.services;
 import com.example.multidatasourcedemo.Dao.UserDao;
 import com.example.multidatasourcedemo.exception.RollbackException;
 import com.example.multidatasourcedemo.pojo.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,14 @@ import java.beans.Transient;
  */
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
     @Resource
     private UserDao userDao;
 
-    protected Logger logger = Logger.getLogger(getClass());
+//    protected Logger logger = Logger.getLogger(getClass());
 
     //默认回滚类为RuntimeException或Error.所以回滚所有的非编译性异常
     @Transactional(rollbackFor = { Exception.class })
@@ -85,7 +87,7 @@ public class UserService {
      */
     public void insertTest2() throws RollbackException {
         //自调用，要想回滚
-        logger.info("请求开始");
+        log.info("请求开始");
         UserService userService = ((UserService) AopContext.currentProxy());
         userService.insert1();
     }
