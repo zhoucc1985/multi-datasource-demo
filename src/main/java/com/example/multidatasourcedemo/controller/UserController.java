@@ -2,9 +2,7 @@ package com.example.multidatasourcedemo.controller;
 
 import com.example.multidatasourcedemo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName: UserController
@@ -33,5 +31,16 @@ public class UserController {
             return "插入失败";
         }
         return "插入成功";
+    }
+
+    @RequestMapping(value = "/hello", method= RequestMethod.GET)
+    public String hello(@RequestParam String name) {
+        return "Hello " + name;
+    }
+
+    @RequestMapping(value = "/exception", method= RequestMethod.GET)
+    public String hello() {
+        int i = 1/0;
+        return "exception";
     }
 }
