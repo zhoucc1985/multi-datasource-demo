@@ -23,6 +23,8 @@ import java.util.Arrays;
 @Slf4j
 public class WebLogAspect {
 
+    ThreadLocal<Long> startTime = new ThreadLocal<>();
+
     /**
      * 切入点
      */
@@ -31,6 +33,8 @@ public class WebLogAspect {
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
+        startTime.set(System.currentTimeMillis());
+        log.info(startTime.toString() + ": 开始时间" + startTime.get());
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         // 记录下请求内容
@@ -45,10 +49,15 @@ public class WebLogAspect {
     public void doAfterReturning(Object ret) throws Throwable {
         // 处理完请求，返回内容
         log.info("RESPONSE : {}", ret);
+        log.info("SPEND TIME : " + (System.currentTimeMillis() - startTime.get()));
+        log.info(startTime.toString() + "结束时间时的开始时间：" + startTime.get());
     }
 
     @AfterThrowing(pointcut = "webLog()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
         log.error("Exception : {}", e.toString());
+        log.info("SPEND TIME : " + (System.currentTimeMillis() - startTime.get()));
+        log.info(startTime.toString());
+        log.info(startTime.toString() + "结束时间时的开始时间：" + startTime.get());
     }
 }

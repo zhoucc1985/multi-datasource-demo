@@ -43,7 +43,8 @@ public class UserController{
     }
 
     @RequestMapping(value = "/exception", method= RequestMethod.GET)
-    public String hello() {
+    public String hello() throws InterruptedException {
+        Thread.sleep(60000);
         int i = 1/0;
         return "exception";
     }
