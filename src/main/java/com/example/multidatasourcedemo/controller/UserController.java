@@ -1,6 +1,8 @@
 package com.example.multidatasourcedemo.controller;
 
+import com.example.multidatasourcedemo.Component.CurrentUser;
 import com.example.multidatasourcedemo.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-public class UserController {
+@Slf4j
+public class UserController{
 
     @Autowired
     private UserService userService;
@@ -34,7 +37,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/hello", method= RequestMethod.GET)
-    public String hello(@RequestParam String name) {
+    public String hello(@RequestParam String name, @CurrentUser String curUser) {
+        log.info("user : {}", curUser);
         return "Hello " + name;
     }
 
