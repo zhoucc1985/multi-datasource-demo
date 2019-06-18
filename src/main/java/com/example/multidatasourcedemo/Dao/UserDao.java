@@ -3,6 +3,8 @@ package com.example.multidatasourcedemo.Dao;
 import com.example.multidatasourcedemo.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @ClassName: InfoMapper
  * @Auther: zhoucc
@@ -13,6 +15,8 @@ import org.apache.ibatis.annotations.Mapper;
 //@Mapper
 public interface UserDao {
     public User find();
+
+    public List<User> list();
 
     public int insert(User user);
 }

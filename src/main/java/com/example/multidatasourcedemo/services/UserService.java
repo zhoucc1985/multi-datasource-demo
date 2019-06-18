@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.beans.Transient;
+import java.util.List;
 
 
 /**
@@ -90,6 +91,14 @@ public class UserService {
         log.info("请求开始");
         UserService userService = ((UserService) AopContext.currentProxy());
         userService.insert1();
+    }
+
+    /**
+     * 获取所有的用户
+     */
+    @Transactional
+    public List<User> list(){
+        return userDao.list();
     }
 
 }

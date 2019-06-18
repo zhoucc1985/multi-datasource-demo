@@ -8,4 +8,7 @@
     <insert id="insert" parameterType="com.example.multidatasourcedemo.pojo.User">
       insert into users(user_name) values(#{userName})
     </insert>
+    <select id="list" resultType="com.example.multidatasourcedemo.pojo.User" >
+      select id,user_name AS userName from users;
+    </select>
 </mapper>
