@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+</head>
+<body>
+<h2>websocket 测试</h2>
+地 址: <input type="text" id="address">
+<button type="button" onclick="connectWS()">连接</button><br>
+内 容: <input type="text" id="send_content"/> <button type="button" onclick="sendMsg()">发送</button>
+</body>
+<script>
+    var websocket = null;
+
+    function connectWS() {
+        // ws://localhost:8080/websocket
+        if('WebSocket' in window){
+            var address = document.getElementById("address").value.toString().trim();
+            websocket = new WebSocket(address);
+            if (websocket == "" || websocket == null || websocket == undefined) {
+                return;
+            }
+            websocket.onopen = function (event) {
+                alert("连接成功！")
+            }
+
+            websocket.onclose = function (event) {
+                console.log("断开连接");
+            }
+
+            websocket.onmessage = function (event) {
+                alert("收到消息" + event.data);
+            }
+
+            websocket.onerror = function (event) {
+                alert("websocket通信发生错误");
+            }
+
+            window.onbeforeunload = function (event) {
+                websocket.close();
+            }
+        }else{
+            alert("该浏览器不支持WebSocket");
+        }
+    }
+    
+    function sendMsg() {
+        var msg=document.getElementById("send_content").value.toString().trim();
+        websocket.send(msg);
+    }
+</script>
+</html>

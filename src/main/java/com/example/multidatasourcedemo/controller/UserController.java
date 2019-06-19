@@ -1,6 +1,7 @@
 package com.example.multidatasourcedemo.controller;
 
 import com.example.multidatasourcedemo.Component.CurrentUser;
+import com.example.multidatasourcedemo.Component.WebSocket;
 import com.example.multidatasourcedemo.pojo.User;
 import com.example.multidatasourcedemo.services.UserService;
 import io.swagger.annotations.Api;
@@ -28,6 +29,10 @@ public class UserController{
 
     @Autowired
     private UserService userService;
+
+
+    @Autowired
+    private WebSocket webSocket;
 
     @ResponseBody
     @RequestMapping("getUser/{id}")
@@ -68,6 +73,13 @@ public class UserController{
     public String  listUser(Model model) {
         List<User> userList = userService.list();
         model.addAttribute("users", userList);
+        webSocket.sendMessage("有订单需要处理!");
         return "/user/list.html";
+    }
+
+    @ApiOperation(value="websocket测试", notes="返回websocket测试首页")
+    @RequestMapping("/websocket")
+    public String websocket() {
+        return "/websocket/websocket.html";
     }
 }
