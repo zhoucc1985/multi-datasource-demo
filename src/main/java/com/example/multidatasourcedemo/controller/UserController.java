@@ -7,6 +7,11 @@ import com.example.multidatasourcedemo.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,5 +86,72 @@ public class UserController{
     @RequestMapping("/websocket")
     public String websocket() {
         return "/websocket/websocket.html";
+    }
+
+    /**
+     * add.html用户添加
+     */
+    @RequestMapping("/add")
+    public String add() {
+        return "/user/add";
+    }
+
+    /**
+     * update.html用户更新
+     */
+    @RequestMapping("/update")
+    public String update() {
+        return "/user/update";
+    }
+
+    /**
+     * login.html自定义的登录页面
+     */
+    @RequestMapping(value = "/login", method=RequestMethod.GET)
+    public String login() {
+        return "/user/login";
+    }
+
+    /**
+     * login.html自定义的登录页面
+     */
+    @RequestMapping("/testThymeleaf")
+    public String testThymeleaf() {
+        return "/user/test.html";
+    }
+
+    /**
+     * 登录逻辑处理
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(String name,String password,Model model) {
+        /*
+         * 使用Shiro编写认证操作
+         * 1.获取Subject
+         * 2.封装用户数据
+         * 3、执行登录方法
+         */
+        //1.获取Subject
+        Subject subject = SecurityUtils.getSubject();
+        //2.封装用户数据
+        UsernamePasswordToken token = new UsernamePasswordToken(name,password);
+        //3.执行登录方法
+        try {
+            subject.login(token);
+            /*
+             * 无任何异常，则登录成功
+             * 跳转到test.html页面
+             */
+            return "redirect:/testThymeleaf";		//redirect：重定向（不带数据），而非转发请求（带数据）
+        } catch (UnknownAccountException e) {
+            //UnKnownAccountException登录失败：用户名不存在
+            model.addAttribute("msg", "用户名不存在");
+            //带着msg数据，转发请求
+            return "/user/login";
+        } catch (IncorrectCredentialsException e) {
+            //IncorrectCredentialsException登录失败：密码错误
+            model.addAttribute("msg", "密码错误");
+            return "/user/login";
+        }
     }
 }
