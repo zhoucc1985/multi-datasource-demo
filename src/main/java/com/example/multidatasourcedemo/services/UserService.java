@@ -72,31 +72,43 @@ public class UserService {
     }
 
     @Transactional
-    public void insert1() {
+    public void insertException() {
         User user1 = User.builder().userName("0001").build();
         userDao.insert(user1);
         User user2 = User.builder().userName("0002").build();
-        // 模拟事务中原子操作失败，观察事务是否回滚
-        int i = 1/0;
         userDao.insert(user2);
+        throw new RuntimeException();
     }
 
-    // 自调用问题。insert1是UserService类异常，代理类异常但是没有事务，直接提交，所以不会滚。如果要回滚，需要在调用方法上添加事务。这样才会滚
-//    @Transactional
-    public void insertTest1() throws RollbackException{
+    /**
+     * 自调用问题。前提条件：主事务方法自调用捕获异常不抛出异常事务方法，这样主事务方法无法感知到异常，也就无法回滚。如果自调用方法抛出异常，则主方法感知会回滚。自调用方法的对象不是代理对象，所以不会进行AOP处理回滚。
+     * @throws RollbackException
+     */
+    @Transactional
+    public void insertTest1(){
         //没有回滚
-        insert1();
+        try {
+            insertException();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 没有开启事务，自调用insert1，利用userService代理类异常触发它的事务
      * @throws RollbackException
      */
-    public void insertTest2() throws RollbackException {
+    @Transactional
+    public void insertRollBackOK(){
         //自调用，要想回滚
         log.info("请求开始");
         UserService userService = ((UserService) AopContext.currentProxy());
-        userService.insert1();
+        try {
+            userService.insertException();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

@@ -56,7 +56,7 @@ public class UserController{
     @RequestMapping("/insert")
     public String insertUser() {
         try {
-            userService.insertTest2();
+            userService.insertTest1();
         } catch (Exception e) {
             e.printStackTrace();
             return "插入失败";
@@ -65,10 +65,10 @@ public class UserController{
     }
 
     @ResponseBody
-    @RequestMapping("/insertOK")
-    public String insertUserOK() {
+    @PostMapping("/insertRollBackOK")
+    public String insertRollBackOK() {
         try {
-            userService.insertUserOK();
+            userService.insertRollBackOK();
         } catch (Exception e) {
             e.printStackTrace();
             return "插入失败";
