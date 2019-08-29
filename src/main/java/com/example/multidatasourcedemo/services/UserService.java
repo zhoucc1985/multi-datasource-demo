@@ -9,6 +9,7 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -51,6 +52,11 @@ public class UserService {
         // 模拟事务中原子操作失败，观察事务是否回滚
         int i = 1/0;
         userDao.insert(user2);
+    }
+
+    public void insertUserOK() {
+        User user1 = User.builder().userName("0001").build();
+        userDao.insert(user1);
     }
 
     /**
@@ -99,6 +105,30 @@ public class UserService {
     @Transactional
     public List<User> list(){
         return userDao.list();
+    }
+
+    /**
+     * 默认插入事务
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addRequired(User user) {
+        userDao.insert(user);
+    }
+
+    /**
+     * 新建新的事务
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addRequiresNew(User user){
+        userDao.insert(user);
+    }
+
+    /**
+     * 插入NESTED事务
+     */
+    @Transactional(propagation = Propagation.NESTED)
+    public void addNested(User user){
+        userDao.insert(user);
     }
 
 }

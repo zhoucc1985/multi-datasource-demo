@@ -4,6 +4,7 @@ import com.example.multidatasourcedemo.Component.CurrentUser;
 import com.example.multidatasourcedemo.Component.WebSocket;
 import com.example.multidatasourcedemo.pojo.User;
 import com.example.multidatasourcedemo.services.UserService;
+import com.example.multidatasourcedemo.services.UserServiceTest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class UserController{
     @Autowired
     private UserService userService;
 
+    @Resource
+    private UserServiceTest userServiceTest;
+
 
     @Autowired
     private WebSocket webSocket;
@@ -52,6 +57,18 @@ public class UserController{
     public String insertUser() {
         try {
             userService.insertTest2();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "插入失败";
+        }
+        return "插入成功";
+    }
+
+    @ResponseBody
+    @RequestMapping("/insertOK")
+    public String insertUserOK() {
+        try {
+            userService.insertUserOK();
         } catch (Exception e) {
             e.printStackTrace();
             return "插入失败";
@@ -159,4 +176,27 @@ public class UserController{
             return "/user/login";
         }
     }
+
+    /**
+     * 事务传递性测试
+     */
+    @RequestMapping(value = "/insert3", method = RequestMethod.POST)
+    public void insert() {
+//        userServiceTest.notransaction_exception_required_required();
+//        userServiceTest.notransaction_required_required_exception();
+//        userServiceTest.transaction_exception_required_required();
+//        userServiceTest.transaction_required_required_exception();
+//        userServiceTest.transaction_required_required_exception_try();
+//        userServiceTest.notransaction_exception_requiresNew_requiresNew();
+//        userServiceTest.notransaction_requiresNew_requiresNew_exception();
+//        userServiceTest.transaction_exception_required_requiresNew_requiresNew();
+//        userServiceTest.transaction_required_requiresNew_requiresNew_exception();
+//        userServiceTest.transaction_required_requiresNew_requiresNew_exception_try();
+//        userServiceTest.notransaction_exception_nested_nested();
+//        userServiceTest.notransaction_nested_nested_exception();
+//        userServiceTest.transaction_exception_nested_nested();
+//        userServiceTest.transaction_nested_nested_exception();
+        userServiceTest.transaction_nested_nested_exception_try();
+    }
+
 }

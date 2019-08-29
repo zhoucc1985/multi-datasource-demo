@@ -1,7 +1,9 @@
 package com.example.multidatasourcedemo.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @ClassName: User
@@ -12,6 +14,8 @@ import lombok.Data;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     private long id;
