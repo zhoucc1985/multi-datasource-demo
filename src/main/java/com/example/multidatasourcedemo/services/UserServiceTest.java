@@ -1,6 +1,9 @@
 package com.example.multidatasourcedemo.services;
 
+import com.example.multidatasourcedemo.Dao.primary.UserDao;
+import com.example.multidatasourcedemo.Dao.second.UserSecondDao;
 import com.example.multidatasourcedemo.pojo.User;
+import com.example.multidatasourcedemo.vo.JsonResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,24 @@ public class UserServiceTest {
 
     @Resource
     private UserService2 userService2;
+
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    private UserSecondDao userSecondDao;
+
+
+    /**
+     * 两个数据源事务一个回滚是否影响另一个。
+     */
+    @Transactional
+    public void insertTwoTest() {
+        User user = User.builder().userName("zhoucc").build();
+        userDao.insert(user);
+        userSecondDao.insert(user);
+        throw new RuntimeException();
+    }
 
     /**
      * 此场景外围方法没有开启事务且抛出异常.

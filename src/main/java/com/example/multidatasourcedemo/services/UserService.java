@@ -1,19 +1,16 @@
 package com.example.multidatasourcedemo.services;
 
-import com.example.multidatasourcedemo.Dao.UserDao;
+import com.example.multidatasourcedemo.Dao.primary.UserDao;
+import com.example.multidatasourcedemo.Dao.second.UserSecondDao;
 import com.example.multidatasourcedemo.exception.RollbackException;
 import com.example.multidatasourcedemo.pojo.User;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.beans.Transient;
 import java.util.List;
 
 
@@ -28,11 +25,11 @@ import java.util.List;
 @Slf4j
 public class UserService {
 
-    @Autowired
     @Resource
     private UserDao userDao;
 
-//    protected Logger logger = Logger.getLogger(getClass());
+    @Resource
+    private UserSecondDao userSecondDao;
 
     //默认回滚类为RuntimeException或Error.所以回滚所有的非编译性异常
     @Transactional(rollbackFor = { Exception.class })
@@ -108,15 +105,28 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
-     * 获取所有的用户
+     * 获取主数据源中的所有的用户
      */
     @Transactional
-    public List<User> list(){
+    public List<User> listPrimary(){
         return userDao.list();
+    }
+
+    /**
+     * 获取从数据源中的所有的用户
+     */
+    public List<User> listSecond() {
+        return userSecondDao.list();
+    }
+
+    @Transactional
+    public List<User> list() {
+        List<User> primaryUsers =  userDao.list();
+        primaryUsers.addAll(userSecondDao.list());
+        return primaryUsers;
     }
 
     /**

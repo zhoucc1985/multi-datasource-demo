@@ -5,6 +5,8 @@ import com.example.multidatasourcedemo.Component.WebSocket;
 import com.example.multidatasourcedemo.pojo.User;
 import com.example.multidatasourcedemo.services.UserService;
 import com.example.multidatasourcedemo.services.UserServiceTest;
+import com.example.multidatasourcedemo.utils.ResultGenerator;
+import com.example.multidatasourcedemo.vo.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -95,7 +97,7 @@ public class UserController{
     @ApiOperation(value="获取所有的用户", notes="配合Thymeleaf页面展示")
     @RequestMapping("/list")
     public String  listUser(Model model) {
-        List<User> userList = userService.list();
+        List<User> userList = userService.listPrimary();
         model.addAttribute("users", userList);
         webSocket.sendMessage("有订单需要处理!");
         return "/user/list.html";
@@ -199,4 +201,44 @@ public class UserController{
         userServiceTest.transaction_nested_nested_exception_try();
     }
 
+    /**
+     * 获取主数据源中user表对象
+     */
+    @ResponseBody
+    @RequestMapping("/listPrimary")
+    public void getPrimaryUsers() {
+        List<User> users = userService.listPrimary();
+        users.stream().forEach(user -> System.out.println(user));
+    }
+
+    /**
+     * 获取从数据源中user表对象
+     */
+    @ResponseBody
+    @RequestMapping("/listSecond")
+    public void getSecondUsers() {
+        List<User> users = userService.listSecond();
+        users.stream().forEach(user -> System.out.println(user));
+    }
+
+    /**
+     * 获取从数据源中user表对象
+     */
+    @ResponseBody
+    @RequestMapping("/all")
+    public JsonResult<List<User>> getUsersFromAlDataSources() {
+        List<User> users = userService.list();
+        return ResultGenerator.genSuccessResult(users);
+    }
+
+
+    /**
+     * 同时向两个数据源中插入数据。
+     */
+    @ResponseBody
+    @PostMapping("/two")
+    public JsonResult<String> insertTwo() {
+        userServiceTest.insertTwoTest();
+        return ResultGenerator.genSuccessResult();
+    }
 }
