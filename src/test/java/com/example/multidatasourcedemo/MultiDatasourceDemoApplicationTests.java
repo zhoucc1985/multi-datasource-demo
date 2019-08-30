@@ -50,7 +50,7 @@ public class MultiDatasourceDemoApplicationTests {
 	@Test
 	public void testSelect(){
 		SqlSessionTemplate barSqlSessionTemplate = (SqlSessionTemplate) springUtils.getBeanByName("barSqlSessionTemplate");
-		String sql = "com.example.multidatasourcedemo.Dao.UserDao.find";
+		String sql = "com.example.multidatasourcedemo.Dao.primary.UserDao.find";
 		List<User>  user = barSqlSessionTemplate.selectList(sql, 1);
 		System.out.println(user.toString());
 	}

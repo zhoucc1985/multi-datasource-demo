@@ -3,7 +3,6 @@ package com.example.multidatasourcedemo.services;
 import com.example.multidatasourcedemo.Dao.primary.UserDao;
 import com.example.multidatasourcedemo.Dao.second.UserSecondDao;
 import com.example.multidatasourcedemo.pojo.User;
-import com.example.multidatasourcedemo.vo.JsonResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
