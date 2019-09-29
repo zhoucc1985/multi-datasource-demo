@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Component;
+package com.example.multidatasourcedemo.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;

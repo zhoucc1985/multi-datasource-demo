@@ -1,6 +1,6 @@
 package com.example.multidatasourcedemo.services;
 
-import com.example.multidatasourcedemo.Dao.primary.UserDao;
+import com.example.multidatasourcedemo.dao.primary.UserDao;
 import com.example.multidatasourcedemo.pojo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Component;
+package com.example.multidatasourcedemo.component;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

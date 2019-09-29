@@ -1,6 +1,6 @@
 package com.example.multidatasourcedemo.utils;
 
-import com.example.multidatasourcedemo.vo.JsonResult;
+import com.example.multidatasourcedemo.vo.sys.Result;
 
 /**
  * 响应结果生成工具
@@ -19,8 +19,8 @@ public class ResultGenerator {
      *
      * @return
      */
-    public static <T> JsonResult<T> genSuccessResult() {
-        return new JsonResult<T>().setStatus(RETURN_STATE_SUC).setMessage(DEFAULT_SUCCESS_MESSAGE);
+    public static <T> Result<T> genSuccessResult() {
+        return new Result<T>().setStatus(RETURN_STATE_SUC).setMessage(DEFAULT_SUCCESS_MESSAGE);
     }
 
     /**
@@ -29,8 +29,8 @@ public class ResultGenerator {
      * @param data 数据内容
      * @return
      */
-    public static <T> JsonResult<T> genSuccessResult(T data) {
-        return new JsonResult<T>().setStatus(RETURN_STATE_SUC).setMessage(DEFAULT_SUCCESS_MESSAGE).setDatas(data);
+    public static <T> Result<T> genSuccessResult(T data) {
+        return new Result<T>().setStatus(RETURN_STATE_SUC).setMessage(DEFAULT_SUCCESS_MESSAGE).setDatas(data);
     }
 
 
@@ -41,8 +41,8 @@ public class ResultGenerator {
      * @param <T>
      * @return
      */
-    public static <T> JsonResult<T> genFailResult() {
-        return new JsonResult<T>().setStatus(RETURN_STATE_FAIL).setMessage(DEFAULT_FAIL_MESSAGE);
+    public static <T> Result<T> genFailResult() {
+        return new Result<T>().setStatus(RETURN_STATE_FAIL).setMessage(DEFAULT_FAIL_MESSAGE);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ResultGenerator {
      * @param message 失败原因
      * @return
      */
-    public static <T> JsonResult<T> genFailResult(String message) {
-        return new JsonResult<T>().setStatus(RETURN_STATE_FAIL).setMessage(message);
+    public static <T> Result<T> genFailResult(String message) {
+        return new Result<T>().setStatus(RETURN_STATE_FAIL).setMessage(message);
     }
 }

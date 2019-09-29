@@ -1,7 +1,6 @@
 package com.example.multidatasourcedemo.configure;
 
-import com.example.multidatasourcedemo.Component.AcessInterceptor;
-import com.example.multidatasourcedemo.Component.CurrentUserMethodArgumentResolver;
+import com.example.multidatasourcedemo.component.CurrentUserMethodArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

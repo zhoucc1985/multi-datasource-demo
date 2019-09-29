@@ -1,12 +1,12 @@
 package com.example.multidatasourcedemo.controller;
 
-import com.example.multidatasourcedemo.Component.CurrentUser;
-import com.example.multidatasourcedemo.Component.WebSocket;
+import com.example.multidatasourcedemo.component.CurrentUser;
+import com.example.multidatasourcedemo.component.WebSocket;
 import com.example.multidatasourcedemo.pojo.User;
 import com.example.multidatasourcedemo.services.UserService;
 import com.example.multidatasourcedemo.services.UserServiceTest;
 import com.example.multidatasourcedemo.utils.ResultGenerator;
-import com.example.multidatasourcedemo.vo.JsonResult;
+import com.example.multidatasourcedemo.vo.sys.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -226,7 +226,7 @@ public class UserController{
      */
     @ResponseBody
     @RequestMapping("/all")
-    public JsonResult<List<User>> getUsersFromAlDataSources() {
+    public Result<List<User>> getUsersFromAlDataSources() {
         List<User> users = userService.list();
         return ResultGenerator.genSuccessResult(users);
     }
@@ -237,7 +237,7 @@ public class UserController{
      */
     @ResponseBody
     @PostMapping("/two")
-    public JsonResult<String> insertTwo() {
+    public Result<String> insertTwo() {
         userServiceTest.insertTwoTest();
         return ResultGenerator.genSuccessResult();
     }

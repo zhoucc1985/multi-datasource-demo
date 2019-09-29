@@ -1,7 +1,7 @@
 package com.example.multidatasourcedemo.controller;
 
 import com.example.multidatasourcedemo.utils.ResultGenerator;
-import com.example.multidatasourcedemo.vo.JsonResult;
+import com.example.multidatasourcedemo.vo.sys.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public JsonResult<String> jsonErrorHandler(HttpServletRequest req, Exception e) {
+    public Result<String> jsonErrorHandler(HttpServletRequest req, Exception e) {
         return ResultGenerator.genFailResult(e.getMessage());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Dao;
+package com.example.multidatasourcedemo.dao;
 
 import com.example.multidatasourcedemo.pojo.User;
 import lombok.NonNull;

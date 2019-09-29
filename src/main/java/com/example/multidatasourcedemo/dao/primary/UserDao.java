@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Dao.second;
+package com.example.multidatasourcedemo.dao.primary;
 
 import com.example.multidatasourcedemo.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,10 +13,10 @@ import java.util.List;
  */
 
 @Mapper
-public interface UserSecondDao {
-    User find();
+public interface UserDao {
+    public User find();
 
-    List<User> list();
+    public List<User> list();
 
-    int insert(User user);
+    public int insert(User user);
 }

@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Component;
+package com.example.multidatasourcedemo.component;
 
 import com.example.multidatasourcedemo.utils.IpUtil;
 import lombok.extern.slf4j.Slf4j;

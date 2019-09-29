@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Component;
+package com.example.multidatasourcedemo.component;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

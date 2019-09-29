@@ -1,4 +1,4 @@
-package com.example.multidatasourcedemo.Component;
+package com.example.multidatasourcedemo.component;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

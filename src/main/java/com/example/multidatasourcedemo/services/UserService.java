@@ -1,7 +1,7 @@
 package com.example.multidatasourcedemo.services;
 
-import com.example.multidatasourcedemo.Dao.primary.UserDao;
-import com.example.multidatasourcedemo.Dao.second.UserSecondDao;
+import com.example.multidatasourcedemo.dao.primary.UserDao;
+import com.example.multidatasourcedemo.dao.second.UserSecondDao;
 import com.example.multidatasourcedemo.exception.RollbackException;
 import com.example.multidatasourcedemo.pojo.User;
 import lombok.extern.slf4j.Slf4j;

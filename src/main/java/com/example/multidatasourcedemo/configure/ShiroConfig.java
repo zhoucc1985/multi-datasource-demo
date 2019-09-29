@@ -1,7 +1,7 @@
 package com.example.multidatasourcedemo.configure;
 
-import com.example.multidatasourcedemo.Component.MySessionListener1;
-import com.example.multidatasourcedemo.Component.MySessionListener2;
+import com.example.multidatasourcedemo.component.MySessionListener1;
+import com.example.multidatasourcedemo.component.MySessionListener2;
 import com.example.multidatasourcedemo.pojo.TestRealm;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.SessionListener;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.ArrayList;
 import java.util.Collection;
