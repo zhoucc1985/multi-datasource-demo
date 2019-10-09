@@ -50,8 +50,8 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 	 * 功能描述: springboot jdbcTemplate自带处理并返回主键
 	 *
 	 * @param:
-	 * @auther: zhoucc
-	 * @date: 2019/6/4 17:21
+	 * @auther zhoucc
+	 * @date 2019/6/4 17:21
 	 */
 	@Bean
 	public SimpleJdbcInsert simpleJdbcInsert(@Qualifier("barJdbcTemplate") JdbcTemplate jdbcTemplate) {
@@ -62,8 +62,8 @@ public class MultiDatasourceDemoApplication implements CommandLineRunner  {
 	/**
 	 * 功能描述: springboot jdbcTemplate自带批量处理
 	 *
-	 * @auther: zhoucc
-	 * @date: 2019/6/4 17:22
+	 * @auther zhoucc
+	 * @date 2019/6/4 17:22
 	 */
 	@Bean
 	@Autowired

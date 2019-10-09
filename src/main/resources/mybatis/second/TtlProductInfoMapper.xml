@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.multidatasourcedemo.dao.second.TtlProductInfoMapper">
+
+    <select id="listProduct" resultType="com.example.multidatasourcedemo.pojo.TtlProductInfoPo" parameterType="java.util.Map">
+        SELECT id, product_name AS productName, category_id AS categoryId, category_name AS categoryName, branch_id AS branchId,
+        branch_name AS branchName, shop_id AS shopId, shop_name AS shopName, price, stock, sales_num AS salesNum, create_time AS createTime,
+        update_time AS updateTime, is_del AS isDel FROM ttl_product_info LIMIT #{offset},#{limit}
+    </select>
+
+</mapper>

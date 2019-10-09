@@ -27,7 +27,7 @@ public class JsonUtils {
             JavaType javaType = mapper.getTypeFactory().constructParametricType(ArrayList.class, clazz);
             return mapper.readValue(resource.getInputStream(), javaType);
         } catch (Exception e) {
-            throw new RuntimeException("获取Json数据失败!" + e.getMessage(), e);
+            throw new RuntimeException("获取Json数据失败: " + e.getMessage(), e);
         }
     }
 
@@ -41,7 +41,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(resource.getInputStream(), clazz);
         } catch (Exception e) {
-            throw new RuntimeException("获取Json数据失败!" + e.getMessage(), e);
+            throw new RuntimeException("获取Json数据失败: " + e.getMessage(), e);
         }
     }
 }
