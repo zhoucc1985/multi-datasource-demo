@@ -47,15 +47,18 @@ public class ExcelUtils {
     public Workbook getWorkbook() {
         Workbook workbook = new SXSSFWorkbook(ROW_ACCESS_WINDOW_SIZE);
         String[][] datas = transformData();
-        Field[] fields = list.get(0).getClass().getDeclaredFields();
+        Field[] fields = null;
+        if (list.size() != 0) {
+            fields = list.get(0).getClass().getDeclaredFields();
+        }
         CellStyle style = setCellStyle(workbook);
         int pageRowNum = 0;
         Sheet sheet = null;
 
         long startTime = System.currentTimeMillis();
         log.info("开始处理excel文件...");
-
-        for (int i = 0; i < datas.length; i++) {
+        int i = 0;
+        do {
             // 如果是每个sheet的首行
             if (i % SHEET_MAX_ROW == 0) {
                 // 创建新的sheet
@@ -68,9 +71,12 @@ public class ExcelUtils {
                 createHeader(sheet, style);
             }
             // 创建内容
-            Row row = sheet.createRow(pageRowNum++);
-            createContent(row, style, datas, i, fields);
-        }
+            if (list.size() != 0) {
+                Row row = sheet.createRow(pageRowNum++);
+                createContent(row, style, datas, i, fields);
+            }
+            i++;
+        } while ( i < datas.length);
         log.info("处理文本耗时" + (System.currentTimeMillis() - startTime) + "ms");
         return workbook;
     }
@@ -151,6 +157,9 @@ public class ExcelUtils {
     private String[][] transformData() {
         int dataSize = this.list.size();
         String[][] datas = new String[dataSize][];
+        if (datas.length == 0) {
+            return datas;
+        }
         // 获取报表的列数
         Field[] fields = list.get(0).getClass().getDeclaredFields();
         // 获取实体类的字段名称数组
