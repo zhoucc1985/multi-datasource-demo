@@ -51,6 +51,7 @@ public class TtlProductInfoServiceImpl implements TtlProductInfoService {
      * 每个线程导出记录最大行数
      */
     private List<ExcelHeaderInfo> getHeaderInfo() {
+        // 重点：这里Arrays.asList的参数为数组且数组里面为对象，则List大小就是数组的大小。如果数组里面为基本类型，则将数组本身当成一个对象，则List只有一个元素.
         return Arrays.asList(
                 new ExcelHeaderInfo(0, 0, 0, 0, "id"),
                 new ExcelHeaderInfo(0, 0, 1, 1, "商品名称"),
