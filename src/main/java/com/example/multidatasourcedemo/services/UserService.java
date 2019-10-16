@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -153,4 +155,42 @@ public class UserService {
         userDao.insert(user);
     }
 
+    /**
+     * 通过ids字符串批量查询用户
+     * @param ids 以逗号连接的id集合字符串。1,2,3,4
+     * @return 用户集合
+     */
+    public List<User> getUsersByIds(String ids) {
+        List<Long> idList = Arrays.asList(ids.split(",")).stream().map(Long::valueOf).collect(Collectors.toList());
+        return userDao.findSelectiveByIds(idList);
+    }
+
+    /**
+     * 批量插入用户
+     * @param users 用户对象
+     * @return 成功个数
+     */
+    public int insertBatch(List users) {
+        return userDao.insertSelective(users);
+    }
+
+    /**
+     * 批量删除用户
+     * @param ids 用户id集合
+     * @return 成功个数
+     */
+    public int deleteBatch(String ids) {
+        List<Long> idList = Arrays.asList(ids.split(",")).stream().map(Long::valueOf).collect(Collectors.toList());
+        return userDao.deleteSelectiveByIds(idList);
+    }
+
+    /**
+     * 批量更新用户
+     * @return
+     */
+    public int updateBatch() {
+        List<User> users = Arrays.asList(new User((long) 138, "张三"), new User((long) 139, "李四"));
+        List ids = users.stream().map(User::getId).collect(Collectors.toList());
+        return userDao.updateSelective(users, ids);
+    }
 }

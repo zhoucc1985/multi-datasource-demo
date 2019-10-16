@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -239,6 +240,38 @@ public class UserController{
     @PostMapping("/two")
     public Result<String> insertTwo() {
         userServiceTest.insertTwoTest();
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @ApiOperation(value="通过ids字符串批量查询用户")
+    @ResponseBody
+    @GetMapping
+    public Result<List<User>> getUsersByIds(String ids) {
+        return ResultGenerator.genSuccessResult(userService.getUsersByIds(ids));
+    }
+
+    @ApiOperation(value="批量插入用户")
+    @ResponseBody
+    @PostMapping
+    public Result<String> insertBatch() {
+        List users = Arrays.asList(new User("张三"), new User("李四"));
+        userService.insertBatch(users);
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @ApiOperation(value="通过ids字符串批量删除用户")
+    @ResponseBody
+    @DeleteMapping(value = "/{ids}")
+    public Result<String> deleteBatch(@PathVariable("ids") String ids) {
+        userService.deleteBatch(ids);
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @ApiOperation(value="批量插入用户")
+    @ResponseBody
+    @PutMapping
+    public Result<String> updateBatch() {
+        userService.updateBatch();
         return ResultGenerator.genSuccessResult();
     }
 }

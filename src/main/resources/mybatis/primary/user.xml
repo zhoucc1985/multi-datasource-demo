@@ -8,7 +8,46 @@
     <insert id="insert" parameterType="com.example.multidatasourcedemo.pojo.User">
       insert into users(user_name) values(#{userName})
     </insert>
+
     <select id="list" resultType="com.example.multidatasourcedemo.pojo.User" >
       select id,user_name AS userName from users;
     </select>
+
+    <!--批量查询-->
+    <select id="findSelectiveByIds" resultType="com.example.multidatasourcedemo.pojo.User">
+        SELECT id, user_name AS userName FROM users WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteSelectiveByIds" parameterType="java.util.List">
+        DELETE FROM users WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateSelective">
+        UPDATE users
+        <trim prefix="SET user_name = CASE id" suffix="END">
+            <foreach collection="users" item="user" index="index">
+                when #{user.id} then #{user.userName}
+            </foreach>
+        </trim>
+        WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--批量插入-->
+    <insert id="insertSelective" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO users(user_name)
+        VALUES
+        <foreach collection="users" item="user" index="index" separator="," >
+            (#{user.userName})
+        </foreach>
+    </insert>
 </mapper>
